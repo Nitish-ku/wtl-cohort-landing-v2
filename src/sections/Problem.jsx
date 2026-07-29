@@ -17,8 +17,8 @@ export function Problem() {
 
       <div className="container-content text-left space-y-8 mt-10">
         {PAIN_POINTS.map((p, i) => (
-          <div key={p.lead} className="flex gap-5">
-            <div className="font-serif text-h2 text-wtl-indigo/50 shrink-0 w-8">{i + 1}.</div>
+          <div key={p.lead} className="flex items-start gap-5">
+            <div className="font-serif text-h3 text-wtl-indigo/50 shrink-0 w-8">{i + 1}.</div>
             <p className="text-ink/80">
               <strong className="text-ink">{p.lead}</strong> {p.body}
             </p>

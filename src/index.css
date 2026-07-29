@@ -1,9 +1,10 @@
 /*
-  Font loading (Playfair Display, Caveat, IBM Plex Mono, IBM Plex Sans) now
-  happens via preconnect + <link rel="stylesheet"> in index.html's <head>,
-  not a CSS @import here. A CSS @import blocks rendering until the imported
-  stylesheet finishes downloading; the <head> link pattern lets the browser
-  discover and fetch fonts in parallel with the rest of the page instead.
+  Font loading (Space Grotesk, IBM Plex Mono, IBM Plex Sans, WTL's actual
+  documented brand typography) now happens via preconnect + <link
+  rel="stylesheet"> in index.html's <head>, not a CSS @import here. A CSS
+  @import blocks rendering until the imported stylesheet finishes
+  downloading; the <head> link pattern lets the browser discover and fetch
+  fonts in parallel with the rest of the page instead.
 */
 @import "tailwindcss";
 
@@ -31,8 +32,8 @@
   --color-wtl-sage: #62bfa1;
   --color-wtl-indigo: #4a5dff;
 
-  --font-serif: 'Playfair Display', serif;
-  --font-script: 'Caveat', cursive;
+  --font-serif: 'Space Grotesk', sans-serif;
+  --font-script: 'Space Grotesk', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --font-sans: 'IBM Plex Sans', sans-serif;
 
@@ -131,7 +132,7 @@ h1, h2, h3 {
 
 .script {
   font-family: var(--font-script);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /*
