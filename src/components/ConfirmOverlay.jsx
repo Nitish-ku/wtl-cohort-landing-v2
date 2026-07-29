@@ -2,7 +2,7 @@ export function ConfirmOverlay({ confirmState }) {
   const { heading, message, badge, url, fallbackText } = confirmState
 
   return (
-    <div role="status" aria-live="polite" className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 px-6">
+    <div role="status" aria-live="polite" className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 px-section-x">
       <div className="container-modal rounded-panel bg-white border border-ink/10 shadow-modal p-8 text-center">
         <div className="inline-block rounded-pill bg-wtl-sage/10 text-wtl-sage text-micro font-mono px-3 py-1 mb-4">
           {badge}

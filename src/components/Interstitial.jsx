@@ -17,7 +17,7 @@ export function Interstitial({ onUpgrade, onSkip }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="interstitialHeading"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 px-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 px-section-x"
     >
       <div className="container-modal rounded-panel bg-white border border-ink/10 shadow-modal p-8 text-center">
         <h2 id="interstitialHeading" className="font-serif text-h3 text-ink mb-3">
