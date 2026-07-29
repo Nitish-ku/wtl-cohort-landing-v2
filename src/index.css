@@ -1,16 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 /*
-  PERF FLAG, not fixed in this pass (this file is tokens-only, HTML head
-  changes are a separate downstream task): this @import is render-blocking.
-  CRO research this session ties mobile LCP <= 2.5s / CLS <= 0.1 directly to
-  measured conversion lift (up to 61%, Google/Deloitte). The fix is to move
-  font loading into index.html's <head> as
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="...same URL as above...">
-  so the browser can discover and fetch fonts in parallel with the rest of
-  the page instead of waiting for this stylesheet to finish downloading
-  before it even starts. Do this when the sections are implemented, not here.
+  Font loading (Playfair Display, Caveat, IBM Plex Mono, IBM Plex Sans) now
+  happens via preconnect + <link rel="stylesheet"> in index.html's <head>,
+  not a CSS @import here. A CSS @import blocks rendering until the imported
+  stylesheet finishes downloading; the <head> link pattern lets the browser
+  discover and fetch fonts in parallel with the rest of the page instead.
 */
 @import "tailwindcss";
 

@@ -4,7 +4,33 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The 72-Hour Founder Sprint — Wired to Launch</title>
+    <title>The 72-Hour Founder Sprint | Wired to Launch</title>
+    <meta name="description" content="Join the 72-Hour Founder Sprint, a free program from Wired to Launch that helps founders move from idea to first execution in one weekend." />
+    <!--
+      This build deploys unchanged to 5 different .live domains (see
+      src/lib/srcMap.js), all serving identical content for IG-source
+      attribution. Per Google's guidance on cross-domain duplicate content,
+      a self-referencing relative canonical would NOT be correct here (it
+      would let all 5 be indexed as separate weak duplicates); every
+      deployment should instead declare the same canonical target so
+      ranking signals consolidate onto one domain. wiredtolaunch.live is
+      used below as that target because it is the domain name matching the
+      brand itself; this is a placeholder pick, not a confirmed decision,
+      flag it for review before shipping (see delivery notes).
+    -->
+    <link rel="canonical" href="https://wiredtolaunch.live/" />
+    <meta property="og:title" content="The 72-Hour Founder Sprint | Wired to Launch" />
+    <meta property="og:description" content="Join the 72-Hour Founder Sprint, a free program from Wired to Launch that helps founders move from idea to first execution in one weekend." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="The 72-Hour Founder Sprint | Wired to Launch" />
+    <meta name="twitter:description" content="Join the 72-Hour Founder Sprint, a free program from Wired to Launch that helps founders move from idea to first execution in one weekend." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+    />
   </head>
   <body>
     <div id="root"></div>
