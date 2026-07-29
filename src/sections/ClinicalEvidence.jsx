@@ -6,40 +6,66 @@ import { DashDivider } from '../components/DashDivider'
   the sprint is cohort-based and synchronous instead of self-paced, styled
   with the same white-card-on-tint, script-label, pull-quote language the
   reference uses for its founder section.
+
+  Fact-check pass (this session): all three claims below were rewritten
+  against their actual underlying research rather than the original,
+  overstated copy.
+  - Claim 1 (task initiation) is genuinely supported by the literature,
+    softened here to "research suggests" instead of a flat assertion.
+  - Claim 2 (VR body-doubling study) is a real study, but a 12-person,
+    non-peer-reviewed preprint. The qualifier sits directly beside the
+    stat rather than in fine print, so it can't be misread as a
+    peer-reviewed, large-sample result.
+  - Claim 3 previously claimed body doubling was "the single most-cited
+    factor" in getting ADHD adults to exercise. That does not match the
+    real underlying study and has been replaced (not just reworded) with
+    the actual finding: a 2023 qualitative study of 30 adults with ADHD,
+    where exercising alongside others was one of several factors that made
+    activity easier to sustain.
 */
 const POINTS = [
   {
     lead: "Task initiation isn't a discipline problem.",
-    body: 'ADHD brains show delayed prefrontal cortex maturation and altered dopamine/norepinephrine transmission, the exact systems responsible for starting a task and staying with it. Measurable in brain-imaging research, not a character flaw.',
+    body: 'Research suggests ADHD brains show delayed prefrontal cortex maturation and altered dopamine/norepinephrine transmission, the systems most linked to starting a task and staying with it. A pattern seen in brain-imaging research, not a character flaw.',
   },
   {
-    lead: 'Body doubling has real measured effect.',
-    body: 'A 2025 VR-based study found ADHD participants working alongside a body double completed tasks 27–30% faster than working alone, with better sustained attention. An AI body double performed nearly as well as a human one.',
+    lead: 'Body doubling shows a measurable effect.',
+    body: (
+      <>
+        A 2025 VR-based study found ADHD participants working alongside a body double completed tasks{' '}
+        <strong className="text-ink">27 to 30% faster</strong> than working alone, with better sustained
+        attention.{' '}
+        <span className="text-ink/50 text-small">
+          (A small, preliminary 12-person study, not yet peer-reviewed.)
+        </span>{' '}
+        An AI body double performed nearly as well as a human one.
+      </>
+    ),
   },
   {
-    lead: 'It bypasses executive dysfunction where willpower fails.',
-    body: 'Research on ADHD adults found body doubling was the single most-cited factor that got people to actually exercise, not because it motivated them harder, but because it sidestepped the initiation barrier entirely.',
+    lead: 'It gives structure where willpower alone falls short.',
+    body: "A 2023 qualitative study of 30 adults with ADHD found that exercising alongside others was one of several factors that made physical activity easier to sustain, alongside people noticing real mood and focus improvements from the exercise itself. The sprint borrows the same principle: shared, scheduled sessions instead of a solo to-do list.",
   },
 ]
 
 export function ClinicalEvidence() {
   return (
-    <section className="bg-cream px-6 py-20">
-      <div className="max-w-2xl mx-auto text-center">
-        <div className="script text-wtl-sage text-xl mb-2">Why this works</div>
-        <h2 className="text-3xl md:text-4xl text-ink">
+    <section className="section bg-cream">
+      <div className="container-content text-center">
+        <div className="script text-wtl-sage text-script-sm mb-2">Why this works</div>
+        <h2 className="text-h2 text-ink">
           Not another course. <span className="script text-wtl-indigo">A body double for your launch.</span>
         </h2>
         <DashDivider />
       </div>
 
-      <div className="max-w-2xl mx-auto rounded-3xl bg-white border border-ink/10 shadow-xl shadow-ink/5 p-8 md:p-10 mt-10">
+      <div className="container-content rounded-panel bg-white border border-ink/10 shadow-card p-8 md:p-10 mt-10">
         <div className="space-y-8">
           {POINTS.map((p, i) => (
             <div key={p.lead} className="flex gap-4">
-              <div className="font-serif text-2xl text-wtl-indigo/50 shrink-0 w-8">{i + 1}.</div>
+              <div className="font-serif text-h3 text-wtl-indigo/50 shrink-0 w-8">{i + 1}.</div>
               <p className="text-ink/80">
-                <strong className="text-ink font-serif text-lg block mb-1">{p.lead}</strong>
+                <strong className="text-ink font-serif text-h3 block mb-1">{p.lead}</strong>
                 {p.body}
               </p>
             </div>
@@ -47,8 +73,9 @@ export function ClinicalEvidence() {
         </div>
 
         <blockquote className="mt-8 pt-8 border-t border-ink/10 text-center">
-          <p className="script text-2xl text-wtl-sage">
-            "This is why the sprint is cohort-based and synchronous, done alongside others in triads, not a course you complete alone."
+          <p className="font-serif italic text-ink/70 text-body-lg">
+            "This is why the sprint is cohort-based and synchronous, done alongside others in triads, not a
+            course you complete alone."
           </p>
         </blockquote>
       </div>

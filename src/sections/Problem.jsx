@@ -9,16 +9,16 @@ const PAIN_POINTS = [
 
 export function Problem() {
   return (
-    <section className="bg-wtl-sage/10 px-6 py-20 text-center">
-      <h2 className="text-3xl md:text-4xl text-ink max-w-xl mx-auto">
+    <section className="section bg-wtl-sage/10 text-center">
+      <h2 className="text-h2 text-ink max-w-narrow mx-auto">
         You don't have an idea problem. You have a <span className="script text-wtl-indigo">finishing</span> problem.
       </h2>
       <DashDivider />
 
-      <div className="max-w-2xl mx-auto text-left space-y-8 mt-10">
+      <div className="container-content text-left space-y-8 mt-10">
         {PAIN_POINTS.map((p, i) => (
           <div key={p.lead} className="flex gap-5">
-            <div className="font-serif text-3xl text-wtl-indigo/50 shrink-0 w-8">{i + 1}.</div>
+            <div className="font-serif text-h2 text-wtl-indigo/50 shrink-0 w-8">{i + 1}.</div>
             <p className="text-ink/80">
               <strong className="text-ink">{p.lead}</strong> {p.body}
             </p>

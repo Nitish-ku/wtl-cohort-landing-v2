@@ -26,32 +26,35 @@ const DAYS = [
   One of only two dark (#1a2e25) sections on this page, per the landing-page
   v4 rule: dark is reserved for "How it works" and "FAQ" only, everything
   else stays light. Mirrors the reference site's phase-detail treatment:
-  numbered circle badges on a vertical line, white serif sub-heads, a
+  numbered circle badges on a vertical line (a deliberate choice among the
+  reference's three badge patterns, kept as-is), white serif sub-heads, a
   script-styled payoff line under each step.
 */
 export function HowItWorks() {
   return (
     <>
       <Wave fill="#1a2e25" />
-      <section className="bg-wtl-dark px-6 py-20 text-center">
-        <div className="script text-wtl-sage text-xl mb-2">You've seen the sprint. Here's what happens each day.</div>
-        <h2 className="text-3xl md:text-4xl text-white">Three days. One push. A real launch.</h2>
+      <section className="section bg-wtl-dark text-center">
+        <div className="script text-wtl-sage text-script-sm mb-2">
+          You've seen the sprint. Here's what happens each day.
+        </div>
+        <h2 className="text-h2 text-white">Three days. One push. A real launch.</h2>
         <DashDivider />
 
-        <div className="max-w-2xl mx-auto text-left mt-10">
+        <div className="container-content text-left mt-10">
           {DAYS.map((day, i) => (
             <div key={day.label} className="flex gap-5">
               <div className="flex flex-col items-center">
-                <div className="w-11 h-11 rounded-full border-2 border-wtl-sage text-wtl-sage font-serif text-lg flex items-center justify-center shrink-0">
+                <div className="w-11 h-11 rounded-full border-2 border-wtl-sage text-wtl-sage font-serif text-h3 flex items-center justify-center shrink-0">
                   {i + 1}
                 </div>
                 {i < DAYS.length - 1 && <div className="w-px flex-1 bg-white/15 my-1" />}
               </div>
               <div className={i < DAYS.length - 1 ? 'pb-8 border-b border-white/10 mb-0 flex-1' : 'flex-1'}>
-                <div className="text-xs font-mono text-white/40 mb-1">{day.label}</div>
-                <h3 className="font-serif text-xl text-white mb-2">{day.title}</h3>
-                <p className="text-white/70 text-sm mb-2">{day.body}</p>
-                <p className="script text-wtl-sage text-lg">{day.stat}</p>
+                <div className="text-micro font-mono text-white/40 mb-1">{day.label}</div>
+                <h3 className="font-serif text-h3 text-white mb-2">{day.title}</h3>
+                <p className="text-white/70 text-small mb-2">{day.body}</p>
+                <p className="script text-wtl-sage text-script-md">{day.stat}</p>
               </div>
             </div>
           ))}
