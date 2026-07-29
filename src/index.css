@@ -1,4 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+/*
+  PERF FLAG, not fixed in this pass (this file is tokens-only, HTML head
+  changes are a separate downstream task): this @import is render-blocking.
+  CRO research this session ties mobile LCP <= 2.5s / CLS <= 0.1 directly to
+  measured conversion lift (up to 61%, Google/Deloitte). The fix is to move
+  font loading into index.html's <head> as
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="...same URL as above...">
+  so the browser can discover and fetch fonts in parallel with the rest of
+  the page instead of waiting for this stylesheet to finish downloading
+  before it even starts. Do this when the sections are implemented, not here.
+*/
 @import "tailwindcss";
 
 /*
@@ -8,6 +21,15 @@
   accents, no emoji as UI elements. The first pass at this component tree
   ignored all of that and built a generic dark SaaS theme. This is the
   correction.
+
+  Everything below the original 5 colors/4 fonts is an EXTENSION, not a
+  replacement: a section-padding scale, a content-width scale with named
+  exceptions, a type scale, and semantic radius/shadow layers. All of it
+  exists because the first section-building pass hand-typed a different
+  `px-6 py-20` / `max-w-2xl` / `max-w-xl` / `rounded-[2rem]` combination on
+  nearly every section root instead of sharing one source of truth. See
+  the written per-section spec delivered alongside this file for the full
+  rationale and the section-by-section token assignment.
 */
 @theme {
   --color-cream: #faf5ef;
@@ -20,6 +42,86 @@
   --font-script: 'Caveat', cursive;
   --font-mono: 'IBM Plex Mono', monospace;
   --font-sans: 'IBM Plex Sans', sans-serif;
+
+  /* ------------------------------------------------------------------
+     Section rhythm (vertical padding scale)
+     Named by ROLE, not by pixel value, so a future global rhythm change
+     is a one-line edit instead of a find/replace across 11 files. These
+     are ADDITIONS to Tailwind's default --spacing multiplier scale (p-4,
+     py-20, etc. all still work); nothing here resets or removes it.
+     Generates utilities: py-section-y, py-section-y-tight,
+     py-section-y-compact, px-section-x (and p-, m-, gap- equivalents).
+  ------------------------------------------------------------------- */
+  --spacing-section-y: 5rem;         /* 80px - standard section. Today: Problem, ClinicalEvidence, FitCheck, Outcomes, HowItWorks, FAQ, FinalCta all hand-typed py-20 */
+  --spacing-section-y-tight: 3rem;   /* 48px - dense/form-adjacent section. Today: RegistrationForm hand-typed py-16, SocialProof hand-typed an asymmetric pt-4 pb-20 */
+  --spacing-section-y-compact: 2rem; /* 32px - Footer only, today a hand-typed py-8 */
+  --spacing-section-x: 1.5rem;       /* 24px - horizontal gutter, identical everywhere today as a hand-typed px-6 */
+  --spacing-hero-pt: 2rem;           /* 32px - Hero's one documented top-padding exception: it sits directly under the viewport edge with no header above it, today a hand-typed pt-8 */
+  --spacing-sticky-offset: 6rem;     /* 96px - reserves room at the bottom of <main> so content never sits under the fixed StickyCta bar. Today App.jsx has a bare, uncommented pb-24 doing this job */
+
+  /* ------------------------------------------------------------------
+     Content widths
+     ONE canonical width (--container-content) plus NAMED exceptions.
+     Every section's inner wrapper picks one of these, never a literal
+     max-w-* value. Tailwind v4's --container-* namespace generates
+     max-w-content / max-w-narrow / max-w-wide / max-w-hero / max-w-form /
+     max-w-modal (and matching min-w-, w- utilities) automatically.
+  ------------------------------------------------------------------- */
+  --container-content: 42rem; /* 672px (= old max-w-2xl) - CANONICAL DEFAULT. Prose-width sections: Problem's body list, ClinicalEvidence, Outcomes' list, HowItWorks, FAQ */
+  --container-narrow: 36rem;  /* 576px (= old max-w-xl) - tight single-line headline width, e.g. Problem's H2 alone */
+  --container-wide: 48rem;    /* 768px (= old max-w-3xl) - multi-column card grids: FitCheck's 3-up row today, future ICP/testimonial grids */
+  --container-hero: 64rem;    /* 1024px (= old max-w-5xl) - NAMED EXCEPTION: Hero's two-column layout needs more room than prose content */
+  --container-form: 28rem;    /* 448px (= old max-w-md) - NAMED EXCEPTION: the registration form card, and every other element sharing its "stat/prize card" visual weight (SocialProof stat, Outcomes prize card, StickyCta's inner row) */
+  --container-modal: 24rem;   /* 384px (= old max-w-sm) - a THIRD exception the brief didn't ask for by name but the codebase already needs: Interstitial and ConfirmOverlay both already use max-w-sm, narrower than --container-form. Kept as its own token rather than silently merged, see written spec for why that's a deliberate density choice for a 2-button dialog, not a bug */
+
+  /* ------------------------------------------------------------------
+     Type scale
+     Fluid (clamp-based) sizes. Every section heading today independently
+     hand-types the identical pair `text-3xl md:text-4xl`; the script
+     accent font gets six different one-off sizes across the file tree
+     (5xl/6xl, 4xl, 2xl, xl, lg) despite the brief requiring it stay used
+     "sparingly" - consolidated here to 3 deliberate script tiers. Fluid
+     clamp() also means no hard breakpoint snap, a smaller reflow/CLS risk
+     than a two-step md: jump, which matters for the mobile LCP/CLS budget.
+  ------------------------------------------------------------------- */
+  --text-display: clamp(2.25rem, calc(1.85rem + 2vw), 3.25rem); /* Hero H1 only (was text-4xl md:text-5xl) */
+  --text-h2: clamp(1.75rem, calc(1.55rem + 1vw), 2.5rem);       /* every section heading (was text-3xl md:text-4xl, duplicated identically 7 times) */
+  --text-h3: 1.25rem;                                     /* card/day/step sub-headings (was font-serif text-lg/text-xl, inconsistent) */
+  --text-body-lg: 1.125rem;                                /* Hero's lead paragraph (was text-lg) */
+  --text-body: 1rem;                                       /* default paragraph, named for completeness of the scale */
+  --text-small: 0.875rem;                                  /* card body copy, hints, FAQ answers (was text-sm) */
+  --text-micro: 0.75rem;                                   /* mono eyebrows/labels, fine print (was text-xs) */
+  --text-script-sm: 1.25rem;                                /* script used as a small label/eyebrow (was text-lg/text-xl) */
+  --text-script-md: clamp(1.5rem, calc(1.3rem + 1vw), 1.75rem);   /* script used as mid-weight emphasis: pull-quotes, the 216-founders stat, HowItWorks payoff lines (was text-2xl) */
+  --text-script-lg: clamp(2.5rem, calc(1.9rem + 3vw), 3.75rem);   /* script used as a secondary headline: Hero's "Free.", FinalCta's "Start shipping." (was an inconsistent 4xl/5xl/6xl) */
+
+  /* ------------------------------------------------------------------
+     Radius
+     Tailwind's default numeric scale (rounded-xl/2xl/3xl/4xl/full)
+     already covers every value this design uses; nothing was missing
+     numerically. What's added is a SEMANTIC layer mapping WTL's card
+     hierarchy to a name, so the next author reaches for a role instead
+     of guessing a number - exactly how the Hero countdown card ended up
+     with an arbitrary rounded-[2rem] one-off that happens to equal the
+     already-available rounded-4xl.
+  ------------------------------------------------------------------- */
+  --radius-control: 0.75rem; /* = rounded-xl.  Form inputs, chronotype pills, small buttons */
+  --radius-card: 1rem;       /* = rounded-2xl. Standard cards: FitCheck, SocialProof */
+  --radius-panel: 1.5rem;    /* = rounded-3xl. Large feature panels: ClinicalEvidence, Outcomes prize card, RegistrationForm card, both overlay modals */
+  --radius-showcase: 2rem;   /* = rounded-4xl. The single largest showcase element: Hero's countdown card. Replaces its current rounded-[2rem] arbitrary value */
+  --radius-pill: 9999px;     /* = rounded-full, named explicitly because this brand is pill-CTA heavy per the reference site pattern */
+
+  /* ------------------------------------------------------------------
+     Shadow
+     Every shadow in the current build is really TWO Tailwind classes
+     typed together (e.g. `shadow-xl shadow-ink/5`), so the ink/indigo
+     tint can silently disappear if a future edit only touches one of the
+     two classes. Each token below bakes the tint in as ONE class.
+  ------------------------------------------------------------------- */
+  --shadow-card-sm: 0 10px 15px -3px rgb(32 31 28 / 0.05), 0 4px 6px -4px rgb(32 31 28 / 0.05); /* replaces `shadow-lg shadow-ink/5`: FitCheck cards */
+  --shadow-card: 0 20px 25px -5px rgb(32 31 28 / 0.05), 0 8px 10px -6px rgb(32 31 28 / 0.05);   /* replaces `shadow-xl shadow-ink/5`: every larger white panel */
+  --shadow-cta: 0 10px 15px -3px rgb(74 93 255 / 0.2), 0 4px 6px -4px rgb(74 93 255 / 0.2);     /* replaces `shadow-lg shadow-wtl-indigo/20`: every primary indigo CTA button */
+  --shadow-modal: 0 25px 50px -12px rgb(32 31 28 / 0.3); /* replaces the bare, untinted `shadow-2xl`: Interstitial + ConfirmOverlay */
 }
 
 body {
@@ -37,4 +139,72 @@ h1, h2, h3 {
 .script {
   font-family: var(--font-script);
   font-weight: 600;
+}
+
+/*
+  Shared section/container primitives.
+  This is the actual fix for the defect described in this file's header
+  comment: every section going forward composes ONE `.section*` class
+  (spacing) with its own background utility (bg-cream or bg-wtl-dark) and
+  ONE `.container*` class (max-width + centering), instead of hand-typing
+  a fresh `px-6 py-20 max-w-2xl mx-auto` combination per file. Do not add a
+  new literal Tailwind spacing/width value to a section root; add a new
+  named token above instead if none of these fit.
+*/
+.section {
+  padding-block: var(--spacing-section-y);
+  padding-inline: var(--spacing-section-x);
+}
+
+.section-tight {
+  padding-block: var(--spacing-section-y-tight);
+  padding-inline: var(--spacing-section-x);
+}
+
+.section-compact {
+  padding-block: var(--spacing-section-y-compact);
+  padding-inline: var(--spacing-section-x);
+}
+
+.container,
+.container-content {
+  width: 100%;
+  max-width: var(--container-content);
+  margin-inline: auto;
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+}
+
+.container-wide {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-inline: auto;
+}
+
+.container-hero {
+  width: 100%;
+  max-width: var(--container-hero);
+  margin-inline: auto;
+}
+
+.container-form {
+  width: 100%;
+  max-width: var(--container-form);
+  margin-inline: auto;
+}
+
+.container-modal {
+  width: 100%;
+  max-width: var(--container-modal);
+  margin-inline: auto;
+}
+
+/* Reserves room at the bottom of <main> so page content never sits under
+   the fixed StickyCta bar. Replaces App.jsx's current bare `pb-24`. */
+.sticky-cta-offset {
+  padding-bottom: var(--spacing-sticky-offset);
 }
