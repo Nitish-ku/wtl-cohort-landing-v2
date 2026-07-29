@@ -149,8 +149,8 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
             indigo CTA below. Do not upgrade this to full-width/bold.
           */}
           <label
-            className={`flex gap-3 rounded-control border p-4 transition ${
-              isLive ? 'opacity-40 pointer-events-none border-ink/10' : 'border-wtl-sage/30 bg-wtl-sage/5 hover:border-wtl-sage/50 cursor-pointer'
+            className={`flex gap-3 rounded-control border border-dashed p-4 transition ${
+              isLive ? 'opacity-40 pointer-events-none border-ink/10' : 'border-wtl-sage/40 bg-wtl-sage/5 hover:border-wtl-sage/60 cursor-pointer'
             }`}
           >
             <input
@@ -161,11 +161,10 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
               className="mt-1 accent-wtl-sage"
             />
             <div>
-              <div className="script text-wtl-sage text-script-sm leading-none mb-1">Optional upgrade</div>
-              <strong className="text-ink text-small">Add Sprint Copilot</strong>
-              <p className="text-ink/60 text-micro mt-1">
+              <strong className="text-ink text-small block mb-1">Add Sprint Copilot (₹499)</strong>
+              <p className="text-ink/60 text-micro">
                 Skip the blank-page paralysis. Let Sprint Copilot generate your landing page copy, pricing model, and
-                outreach scripts for you in seconds. Sprint founders only.
+                outreach scripts for you in seconds. (Sprint founders only. Normally ₹3,799).
               </p>
               <div className="text-micro mt-2">
                 <span className="line-through text-ink/30">₹3,799</span>{' '}
