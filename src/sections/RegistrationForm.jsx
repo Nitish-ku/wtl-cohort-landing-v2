@@ -1,17 +1,28 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { getSubmitLabel, getSubmitNote } from '../lib/copy'
-
-const CHRONOTYPES = [
-  { value: 'early_bird', name: 'Early Bird', time: 'Before 9 AM' },
-  { value: 'day_operator', name: 'Day Operator', time: '9 AM – 3 PM' },
-  { value: 'night_owl', name: 'Night Owl', time: '6 PM – 2 AM' },
-]
+import { CHRONOTYPES } from '../lib/validation'
 
 export const RegistrationForm = forwardRef(function RegistrationForm(
   { isLive, flow },
   ref
 ) {
   const { fields, setField, errors, bumpIntent, setBumpIntent, consent, setConsent, submitting, handleSubmit } = flow
+
+  const nameRef = useRef(null)
+  const emailRef = useRef(null)
+  const phoneRef = useRef(null)
+  const chronotypeGroupRef = useRef(null)
+
+  // Move focus to the first invalid field whenever a submit attempt
+  // produces errors (client-side validation, or a validation-style error
+  // surfaced back from the backend). Runs post-commit, so it always sees
+  // the errors state that was actually set, not a stale closure of it.
+  useEffect(() => {
+    if (errors.name) nameRef.current?.focus()
+    else if (errors.email) emailRef.current?.focus()
+    else if (errors.phone) phoneRef.current?.focus()
+    else if (errors.chronotype) chronotypeGroupRef.current?.focus()
+  }, [errors])
 
   return (
     <section ref={ref} className="bg-cream px-6 py-16 scroll-mt-6">
@@ -20,33 +31,44 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
         <p className="text-ink/50 text-sm mb-6">Takes 30 seconds. No payment to join.</p>
 
         <div className="space-y-4">
-          <Field label="Name" error={errors.name}>
+          <Field id="name" label="Name" error={errors.name}>
             <input
+              ref={nameRef}
+              id="name"
               type="text"
               autoComplete="name"
               placeholder="Your name"
+              maxLength={100}
               value={fields.name}
               onChange={(e) => setField('name', e.target.value)}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? 'name-error' : undefined}
               className="w-full rounded-xl bg-cream border border-ink/15 px-4 py-3 text-ink placeholder:text-ink/30 focus:border-wtl-indigo outline-none"
             />
           </Field>
 
-          <Field label="Email" error={errors.email}>
+          <Field id="email" label="Email" error={errors.email}>
             <input
+              ref={emailRef}
+              id="email"
               type="email"
               autoComplete="email"
               inputMode="email"
               placeholder="you@email.com"
               value={fields.email}
               onChange={(e) => setField('email', e.target.value)}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
               className="w-full rounded-xl bg-cream border border-ink/15 px-4 py-3 text-ink placeholder:text-ink/30 focus:border-wtl-indigo outline-none"
             />
           </Field>
 
-          <Field label="WhatsApp number" error={errors.phone} hint="WhatsApp only. We send daily PDFs here. No calls, no spam.">
+          <Field id="phone" label="WhatsApp number" error={errors.phone} hint="WhatsApp only. We send daily PDFs here. No calls, no spam.">
             <div className="flex">
               <span className="flex items-center px-3 rounded-l-xl bg-ink/5 border border-r-0 border-ink/15 text-ink/50">+91</span>
               <input
+                ref={phoneRef}
+                id="phone"
                 type="tel"
                 inputMode="numeric"
                 autoComplete="tel"
@@ -54,6 +76,8 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
                 maxLength={10}
                 value={fields.phone}
                 onChange={(e) => setField('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? 'phone-error' : 'phone-hint'}
                 className="w-full rounded-r-xl bg-cream border border-ink/15 px-4 py-3 text-ink placeholder:text-ink/30 focus:border-wtl-indigo outline-none"
               />
             </div>
@@ -61,7 +85,15 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
 
           <div>
             <label className="block text-sm text-ink/70 mb-2">When do you build best?</label>
-            <div role="radiogroup" aria-label="When do you build best?" className="grid grid-cols-3 gap-2">
+            <div
+              ref={chronotypeGroupRef}
+              tabIndex={-1}
+              role="radiogroup"
+              aria-label="When do you build best?"
+              aria-invalid={!!errors.chronotype}
+              aria-describedby={errors.chronotype ? 'chronotype-error' : undefined}
+              className="grid grid-cols-3 gap-2"
+            >
               {CHRONOTYPES.map((c) => (
                 <button
                   key={c.value}
@@ -80,7 +112,11 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
                 </button>
               ))}
             </div>
-            {errors.chronotype && <p className="text-red-500 text-xs mt-2">{errors.chronotype}</p>}
+            {errors.chronotype && (
+              <p id="chronotype-error" role="alert" className="text-red-500 text-xs mt-2">
+                {errors.chronotype}
+              </p>
+            )}
           </div>
 
           <label
@@ -128,6 +164,7 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
           <button
             type="button"
             disabled={submitting}
+            aria-busy={submitting}
             onClick={handleSubmit}
             className="w-full rounded-full bg-wtl-indigo text-white font-semibold py-3.5 disabled:opacity-60 hover:brightness-110 transition shadow-lg shadow-wtl-indigo/20"
           >
@@ -140,13 +177,21 @@ export const RegistrationForm = forwardRef(function RegistrationForm(
   )
 })
 
-function Field({ label, error, hint, children }) {
+function Field({ id, label, error, hint, children }) {
   return (
     <div>
-      <label className="block text-sm text-ink/70 mb-1.5">{label}</label>
+      <label htmlFor={id} className="block text-sm text-ink/70 mb-1.5">{label}</label>
       {children}
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-      {hint && !error && <p className="text-ink/40 text-[11px] mt-1">{hint}</p>}
+      {error && (
+        <p id={`${id}-error`} role="alert" className="text-red-500 text-xs mt-1">
+          {error}
+        </p>
+      )}
+      {hint && !error && (
+        <p id={`${id}-hint`} className="text-ink/40 text-[11px] mt-1">
+          {hint}
+        </p>
+      )}
     </div>
   )
 }
