@@ -7,5 +7,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   test: {
     passWithNoTests: true,
+    environment: 'jsdom',
   },
 })

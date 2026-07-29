@@ -10,7 +10,15 @@ const LIVE_MS = 72 * 60 * 60 * 1000
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
 // Flip to false when Cohort 02 wraps and no new cohort is scheduled yet.
-export const COHORT_ACTIVE = true
+export let COHORT_ACTIVE = true
+
+// Test-only seam: an imported binding can't be reassigned from outside this
+// module (ES modules make imports read-only regardless of const/let), so the
+// "no cohort scheduled" boundary case needs this tiny setter to be
+// exercisable at all. Nothing in app code calls this, only cohortWindow.test.js.
+export function __setCohortActiveForTests(value) {
+  COHORT_ACTIVE = value
+}
 
 // Returns the most recent Friday 03:30:00.000 UTC (= 9:00 AM IST) at or before `now`.
 export function getMostRecentFriday930UTC(now) {
