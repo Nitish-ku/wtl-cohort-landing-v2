@@ -11,6 +11,7 @@ import { Outcomes } from './sections/Outcomes'
 import { FitCheck } from './sections/FitCheck'
 import { SocialProof } from './sections/SocialProof'
 import { RegistrationForm } from './sections/RegistrationForm'
+import { ValueStack } from './sections/ValueStack'
 import { FAQ } from './sections/FAQ'
 import { FinalCta } from './sections/FinalCta'
 import { Footer } from './sections/Footer'
@@ -47,7 +48,7 @@ function App() {
       {/* `inert` mirrors the original page's setContentInert(): while an overlay is up,
           this whole subtree becomes unfocusable/unclickable, so a keyboard user can't
           fire a second submit behind the modal. */}
-      <main inert={overlayOpen} className="min-h-screen bg-cream text-ink pb-24">
+      <main inert={overlayOpen} className="min-h-screen bg-cream text-ink sticky-cta-offset">
         <Hero isLive={isLive} countdownText={countdownText} onClaimClick={scrollToForm} />
         <Problem />
         <ClinicalEvidence />
@@ -56,6 +57,7 @@ function App() {
         <SocialProof isLive={isLive} />
         <HowItWorks />
         <RegistrationForm ref={formRef} isLive={isLive} flow={flow} />
+        <ValueStack />
         <FAQ />
         <FinalCta isLive={isLive} flow={flow} onSubmit={attemptSubmit} />
         <Footer src={getSrcFromHostname(window.location.hostname)} />

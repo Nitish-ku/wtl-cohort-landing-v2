@@ -42,20 +42,20 @@ export function FAQ() {
   return (
     <>
       <Wave fill="#1a2e25" />
-      <section className="bg-wtl-dark px-6 py-20 text-center">
-        <h2 className="text-3xl md:text-4xl text-white">The questions we hear most.</h2>
+      <section className="section bg-wtl-dark text-center">
+        <h2 className="text-h2 text-white">The questions we hear most.</h2>
         <DashDivider />
 
-        <div className="max-w-2xl mx-auto text-left mt-10">
+        <div className="container-content text-left mt-10">
           {QUESTIONS.map(({ q, a }) => (
             <details key={q} className="group border-b border-white/10 py-5">
               <summary className="cursor-pointer list-none flex items-center justify-between gap-4 font-serif text-white">
                 {q}
-                <span className="shrink-0 w-7 h-7 rounded-full bg-wtl-sage/15 text-wtl-sage flex items-center justify-center text-sm group-open:rotate-45 transition-transform">
+                <span className="shrink-0 w-7 h-7 rounded-full bg-wtl-sage/15 text-wtl-sage flex items-center justify-center text-small group-open:rotate-45 transition-transform">
                   +
                 </span>
               </summary>
-              <p className="text-white/60 text-sm mt-3">{a}</p>
+              <p className="text-white/60 text-small mt-3">{a}</p>
             </details>
           ))}
         </div>
