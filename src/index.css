@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/*
+  Design tokens for the actual documented WTL landing-page v4 rule: light
+  mode default, dark sections used ONLY for How-it-works and FAQ (that
+  exact green, #1a2e25, not pure black), sage/indigo as the only two
+  accents, no emoji as UI elements. The first pass at this component tree
+  ignored all of that and built a generic dark SaaS theme. This is the
+  correction.
+*/
+@theme {
+  --color-cream: #faf5ef;
+  --color-ink: #201f1c;
+  --color-wtl-dark: #1a2e25;
+  --color-wtl-sage: #62bfa1;
+  --color-wtl-indigo: #4a5dff;
+
+  --font-serif: 'Playfair Display', serif;
+  --font-script: 'Caveat', cursive;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 800;
+}
+
+.script {
+  font-family: var(--font-script);
+  font-weight: 600;
+}
